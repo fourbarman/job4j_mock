@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.job4j.site.dto.InterviewDTO;
-import ru.job4j.site.dto.PersonDTO;
 import ru.job4j.site.dto.ProfileDTO;
 import ru.job4j.site.service.*;
 
@@ -46,13 +45,6 @@ public class IndexController {
             log.error("Remote application not responding. Error: {}. {}, ", e.getCause(), e.getMessage());
         }
         List<InterviewDTO> interviewsByType = interviewsService.getByType(1);
-//
-//        Set<ProfileDTO> authors = new HashSet<>();
-//        for (InterviewDTO interviewDTO : interviewsByType) {
-//            Optional<ProfileDTO> maybeProfileDTO = profilesService.getProfileById(interviewDTO.getId());
-//            maybeProfileDTO.ifPresent(authors::add);
-//        }
-//        List<ProfileDTO> list = authors.stream().toList();
         Set<ProfileDTO> userList = interviewsByType.stream()
                 .map(x -> profilesService.getProfileById(x.getSubmitterId()))
                 .filter(Optional::isPresent)
